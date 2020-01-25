@@ -5,4 +5,10 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Sudoku\Sudoku.csproj">
+      <EmbedInteropTypes></EmbedInteropTypes>
+    </ProjectReference>
+  </ItemGroup>
+
 </Project>

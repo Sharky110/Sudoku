@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SudokuGenerator
+namespace Sudoku
 {
     public class Field
     {
@@ -31,7 +31,30 @@ namespace SudokuGenerator
             }
         }
 
-        public List<Cell> GenerateField()
+        public void GenerateSudoku(int threads)
+        {
+            var tasks = new Task<List<Cell>>[threads];
+
+            for (int i = 0; i < threads; i++)
+                tasks[i] = Task.Run(GenerateNums);
+
+            while (!tasks.Any(x => x.IsCompleted))
+                Thread.Sleep(10);
+
+            _cells = tasks.FirstOrDefault().Result;
+        }
+
+        public Dictionary<int, int> ToDictionary()
+        {
+            return _cells.ToDictionary(x => x.id, i => i.value);
+        }
+
+        public bool CheckCell(int id, int value)
+        {
+            return _cells[id].value == value;
+        }
+
+        private List<Cell> GenerateField()
         {
             var list = new List<Cell>(FIELD_SIZE);
             for (int i = 0; i < FIELD_SIZE; i++)
@@ -42,36 +65,7 @@ namespace SudokuGenerator
             return list;
         }
 
-        public void PrintField()
-        {
-            foreach (var cell in _cells)
-            {
-                Console.Write(cell.value != 0 ? $"{cell.value} " : " " + " ");
-                if (cell.id % 9 == 8)
-                    Console.Write("\n");
-            }
-        }
-
-        public void GenerateSudoku(int threads)
-        {
-            var start = DateTime.Now;
-
-            var tasks = new Task<List<Cell>>[threads];
-
-            for (int i = 0; i < threads; i++)
-                tasks[i] = Task.Run(GenerateNums);
-
-            while (!tasks.Any(x => x.IsCompleted))
-                Thread.Sleep(10);
-            
-            var time = DateTime.Now - start;
-            var rr = string.Format("{0}.{1}", time.Seconds, time.Milliseconds.ToString().PadLeft(3, '0'));
-            Console.WriteLine($"Elapsed time: {rr}\n");
-
-            _cells =  tasks.FirstOrDefault().Result;
-        }
-
-        public List<Cell> GenerateNums()
+        private List<Cell> GenerateNums()
         {
             var SudokuField = GenerateField();
 
