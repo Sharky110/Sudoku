@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using SudokuEngine;
 
 namespace SudokuGenerator
 {
@@ -8,7 +9,7 @@ namespace SudokuGenerator
         [STAThread]
         static void Main(string[] args)
         {
-            Sudoku.Sudoku d = Sudoku.Sudoku.GetInstanse();
+            Sudoku d = Sudoku.GetInstanse();
             var f = d.Initialize(24);
 
             foreach (var cell in f)

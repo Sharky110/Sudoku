@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sudoku
+namespace SudokuEngine
 {
     public class Sudoku
     {

@@ -1,4 +1,4 @@
-﻿namespace Sudoku
+﻿namespace SudokuEngine
 {
     public class Cell
     {
