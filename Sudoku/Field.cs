@@ -12,11 +12,6 @@ namespace Sudoku
 
         private const int FIELD_SIZE = 81;
 
-        public Field(List<Cell> cells)
-        {
-            _cells = cells;
-        }
-
         public void RemoveNums(int numsToRemove)
         {
             var random = new Random();
@@ -46,7 +41,7 @@ namespace Sudoku
 
         public Dictionary<int, int> ToDictionary()
         {
-            return _cells.ToDictionary(x => x.id, i => i.value);
+            return _cells.ToDictionary(k => k.id, v => v.value);
         }
 
         public bool CheckCell(int id, int value)

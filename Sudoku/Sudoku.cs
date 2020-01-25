@@ -5,14 +5,17 @@ namespace Sudoku
 {
     public class Sudoku
     {
-        private Sudoku _sudoku;
+        private static Sudoku _instanse;
         private Field _field;
 
-        private Sudoku() {}
-
-        public Sudoku GetInstanse()
+        private Sudoku()
         {
-            return _sudoku ?? new Sudoku();
+            _field = new Field();
+        }
+
+        public static Sudoku GetInstanse()
+        {
+            return _instanse ?? (_instanse = new Sudoku());
         }
 
         public Dictionary<int,int> Initialize(int difficult)

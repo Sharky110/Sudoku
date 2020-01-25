@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Sudoku;
 
 namespace SudokuGenerator
 {
@@ -9,14 +8,16 @@ namespace SudokuGenerator
         [STAThread]
         static void Main(string[] args)
         {
-            
-            while (true)
+            Sudoku.Sudoku d = Sudoku.Sudoku.GetInstanse();
+            var f = d.Initialize(24);
+
+            foreach (var cell in f)
             {
-                Console.WriteLine("\nYou wonna play? 1 - Yes");
-                Console.WriteLine("1 - Generate sudoku");
-                Console.WriteLine("2 - Print result");
-                Console.WriteLine("3 - Remove nums");
+                Console.Write(cell.Value != 0 ? $"{cell.Value} " : " " + " ");
+                if (cell.Key % 9 == 8)
+                    Console.Write("\n");
             }
+
         }
     }
 }
