@@ -39,14 +39,21 @@ namespace SudokuEngine
             _cells = tasks.FirstOrDefault().Result;
         }
 
-        public Dictionary<int, int> ToDictionary()
+        public Dictionary<int, string> ToDictionary()
         {
-            return _cells.ToDictionary(k => k.id, v => v.value);
+            return _cells.ToDictionary(k => k.id, v => ToStging(v.value));
         }
 
-        public bool CheckCell(int id, int value)
+        public IEnumerable<int> CheckCell(int id, int value)
         {
-            return _cells[id].value == value;
+            var cell = _cells.Where(x => x.id == id).FirstOrDefault();
+
+            var ff = _cells.Where(x =>
+                 (x.horPosition == cell.horPosition && x.value == value) ||
+                 (x.vertPosition == cell.vertPosition && x.value == value) ||
+                 (x.cubePosition == cell.cubePosition && x.value == value)).Select(x=>x.id);
+
+            return ff;
         }
 
         private List<Cell> GenerateField()
@@ -93,6 +100,11 @@ namespace SudokuEngine
             }
 
             return SudokuField;
+        }
+
+        private string ToStging(int num)
+        {
+            return num == 0 ? " ":num.ToString();
         }
     }
 }
