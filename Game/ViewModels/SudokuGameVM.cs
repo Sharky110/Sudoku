@@ -7,6 +7,8 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using SudokuEngine;
+using System.Windows.Input;
+using Game.Commands;
 
 namespace Game.ViewModels
 {
@@ -14,13 +16,28 @@ namespace Game.ViewModels
     {
         private Sudoku _sudoku;
 
-        public ObservableCollection<CustomButton> Buttons { get; set; }
-        
+        private ObservableCollection<CustomButton> _buttons;
+
+        public ObservableCollection<CustomButton> Buttons
+        {
+            get => _buttons;
+            set => SetProperty(ref _buttons, value);
+        }
+
+        #region Commands
+
+        public ICommand ButtonCommand { get; }
+        public ICommand SaveFileCommand { get; }
+
+        #endregion
+
         public SudokuGameVM()
         {
-            _sudoku = Sudoku.GetInstanse();
+            _sudoku = Sudoku.GetInstance();
 
             var dict = _sudoku.Initialize(29);
+
+
 
             Buttons = new ObservableCollection<CustomButton>(
                dict.Select(s => new CustomButton()
@@ -28,14 +45,14 @@ namespace Game.ViewModels
                    Name = $" {s.Value} ",
                    Id = $"{s.Key}",
                    IsEnabled = true,// string.IsNullOrWhiteSpace(s.Value) ,
-                    Color = "Blue"
+                    Color = "White"
                }));
         }
 
         public void BtnClick(Button btn)
         {
             //(btn.DataContext as CustomButton).Id;
-
+            
             var num = string.IsNullOrWhiteSpace((string)btn.Content) ? "0" : (string)btn.Content;
 
             var ff = Convert.ToInt32(num);
@@ -46,7 +63,8 @@ namespace Game.ViewModels
 
             var ddd = Buttons.Where(x => dd.Contains(Convert.ToInt32(x.Id)));
 
-            Buttons[0].Color = "Red"; 
+            foreach (var t in Buttons)
+                t.Color = "Red";
         }
     }
 }

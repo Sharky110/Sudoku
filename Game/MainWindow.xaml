@@ -3,23 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Game.ViewModels"
         xmlns:local="clr-namespace:Game.Models"
         mc:Ignorable="d"
         Title="Sudoku" Height="600" Width="600">
     <Grid Height="480" Width="480" Margin="24">
+        
         <Grid.Resources>
-            <DataTemplate DataType="{x:Type local:CustomButton}" >
-                <Button Name="button" Content="{Binding Name}" Height="50" Width="50" IsEnabled="{Binding IsEnabled}"
-                        TextBlock.FontSize="20"  Click="Button_Click" MouseRightButtonDown="Button_MouseRightButtonDown" Background="{Binding Color}">
-                </Button>
-                <DataTemplate.Triggers>
-                    <DataTrigger Binding="{Binding Color}" Value="Red">
-                        <Setter TargetName="button" Property="Background" Value="Red" />
-                    </DataTrigger>
-                </DataTemplate.Triggers>
-            </DataTemplate>
+            
         </Grid.Resources>
+        <TextBox Text="{Binding Path=CustomButton.Name}"></TextBox>
         <ItemsControl ItemsSource="{Binding Buttons}" >
+            
+            <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type local:CustomButton}" >
+                    <Button Name="button" Content="{Binding Path=Name}" Height="50" Width="50" IsEnabled="{Binding Path=IsEnabled}"
+                        TextBlock.FontSize="20"  Click="Button_Click" MouseRightButtonDown="Button_MouseRightButtonDown" Background="{Binding Path=Color}">
+                    </Button>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel />

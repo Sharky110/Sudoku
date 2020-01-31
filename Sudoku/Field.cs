@@ -34,7 +34,7 @@ namespace SudokuEngine
                 tasks[i] = Task.Run(GenerateNums);
 
             while (!tasks.Any(x => x.IsCompleted))
-                Thread.Sleep(10);
+                Thread.Sleep(1);
 
             _cells = tasks.FirstOrDefault().Result;
         }

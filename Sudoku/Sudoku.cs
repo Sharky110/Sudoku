@@ -5,7 +5,7 @@ namespace SudokuEngine
 {
     public class Sudoku
     {
-        private static Sudoku _instanse;
+        private static Sudoku _instance;
         private Field _field;
 
         private Sudoku()
@@ -13,9 +13,9 @@ namespace SudokuEngine
             _field = new Field();
         }
 
-        public static Sudoku GetInstanse()
+        public static Sudoku GetInstance()
         {
-            return _instanse ?? (_instanse = new Sudoku());
+            return _instance ?? (_instance = new Sudoku());
         }
 
         public Dictionary<int,string> Initialize(int difficult)
