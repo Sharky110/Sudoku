@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Game.ViewModels"
-        xmlns:local="clr-namespace:Game.Models"
+        xmlns:local2="clr-namespace:Game.Models"
         mc:Ignorable="d"
         Title="Sudoku" Height="600" Width="600">
     <Grid Height="480" Width="480" Margin="24">
@@ -16,9 +16,9 @@
         <ItemsControl ItemsSource="{Binding Buttons}" >
             
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type local:CustomButton}" >
-                    <Button Name="button" Content="{Binding Path=Name}" Height="50" Width="50" IsEnabled="{Binding Path=IsEnabled}"
-                        TextBlock.FontSize="20"  Click="Button_Click" MouseRightButtonDown="Button_MouseRightButtonDown" Background="{Binding Path=Color}">
+                <DataTemplate DataType="{x:Type local2:CustomButton}" >
+                    <Button Name="button" Content="{Binding Path=Name}" Height="50" Width="50"
+                        TextBlock.FontSize="20"  Click="Button_Click" Background="{Binding Path=Color}">
                     </Button>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>

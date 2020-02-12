@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using SudokuEngine;
 using System.Windows.Input;
-using Game.Commands;
 
 namespace Game.ViewModels
 {
@@ -44,15 +43,20 @@ namespace Game.ViewModels
                {
                    Name = $" {s.Value} ",
                    Id = $"{s.Key}",
-                   IsEnabled = true,// string.IsNullOrWhiteSpace(s.Value) ,
-                    Color = "White"
+                   IsEnabled = string.IsNullOrWhiteSpace(s.Value) ,
+                    Color = string.IsNullOrWhiteSpace(s.Value) ? "White" : "LightGray"
                }));
         }
 
         public void BtnClick(Button btn)
         {
-            //(btn.DataContext as CustomButton).Id;
-            
+            var buttonId = (btn.DataContext as CustomButton).Id;
+
+            if (!Buttons[Convert.ToInt32(buttonId)].IsEnabled)
+                return;
+
+            SetDefaultColor();
+
             var num = string.IsNullOrWhiteSpace((string)btn.Content) ? "0" : (string)btn.Content;
 
             var ff = Convert.ToInt32(num);
@@ -61,10 +65,20 @@ namespace Game.ViewModels
 
             var dd = _sudoku.CheckCell(new KeyValuePair<int, int>(Convert.ToInt32((btn.DataContext as CustomButton).Id), Convert.ToInt32(btn.Content)));
 
-            var ddd = Buttons.Where(x => dd.Contains(Convert.ToInt32(x.Id)));
+            foreach (var button in Buttons)
+            {
+                if (dd.Contains(Convert.ToInt32(button.Id)))
+                    button.Color = "Red";
+            }
 
-            foreach (var t in Buttons)
-                t.Color = "Red";
+        }
+
+        public void SetDefaultColor()
+        {
+            foreach (var button in Buttons)
+            {
+                button.Color = button.IsEnabled ? "White" : "LightGray";
+            }
         }
     }
 }

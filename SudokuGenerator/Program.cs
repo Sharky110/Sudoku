@@ -17,7 +17,7 @@ namespace SudokuGenerator
 
             watch.Start();
 
-            int times = 100000;
+            int times = 1;
             byte counter = 0;
             byte random;
             int minTime = 1000000;
@@ -30,8 +30,8 @@ namespace SudokuGenerator
                 {
                     for (int y = 0; y < 9; y++)
                     {
-                        random = (byte)(watch.ElapsedTicks % 9 + 1);
-                        //random = (byte)(rand.Next(1,10));
+                        //random = (byte)(watch.ElapsedTicks % 9 + 1);
+                        random = (byte)(rand.Next(1,10));
 
                         if (IsInRow(x, random) || IsInCol(y, random) || IsInCube(x, y, random))
                         {

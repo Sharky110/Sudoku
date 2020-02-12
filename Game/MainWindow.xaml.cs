@@ -36,17 +36,6 @@ namespace Game
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             context.BtnClick((Button)sender);
-            //for (int i = 0; i < 1; i++)
-            //    Buttons[Convert.ToInt32(ddd.ToList()[i].Id)].Color = Brushes.Red;
-            
-
-        }
-
-        private void Button_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-           /// var num = string.IsNullOrWhiteSpace((string)(sender as Button).Content) ? "0" : (string)(sender as Button).Content;
-         //   var ff = Convert.ToInt32(num);
-          //  (sender as Button).Content = num == "1" ? "9" : $"{ ff -= 1}";
         }
     }
 }
