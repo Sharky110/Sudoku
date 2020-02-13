@@ -7,16 +7,12 @@
         mc:Ignorable="d"
         Title="Sudoku" Height="600" Width="600">
     <Grid Height="480" Width="480" Margin="24">
-        
-        <Grid.Resources>
-            
-        </Grid.Resources>
         <TextBox Text="{Binding Path=CustomButton.Name}"></TextBox>
-        <ItemsControl ItemsSource="{Binding Path=Buttons}" >
+        <ItemsControl ItemsSource="{Binding Path=Cells}" >
             <ItemsControl.ItemTemplate>
-                <DataTemplate DataType="{x:Type Models:CustomButton}" >
+                <DataTemplate DataType="{x:Type Models:Cell}" >
                     <Button Height="50" Width="50" TextBlock.FontSize="20" Name="root"
-                            Content="{Binding Path=Name}" 
+                            Content="{Binding Path=Value}" 
                             Command="{Binding Path=ButtonCommand}" 
                             CommandParameter="{Binding RelativeSource={RelativeSource Self}}"
                             Background="{Binding Path=Color}">

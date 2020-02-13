@@ -4,20 +4,32 @@ using System.Windows.Input;
 
 namespace Game.Models
 {
-    public class CustomButton : INotifyPropertyChanged
+    public class Cell : INotifyPropertyChanged
     {
-        private string _name;
+        private string _value;
         private int _id;
         private bool _isEnabled;
         private string _color;
 
-        public string Name
+        public int vertPosition;
+        public int horPosition;
+        public int cubePosition;
+
+        public Cell(int id, int hor, int vert, int cube)
         {
-            get => _name;
+            Id = id;
+            vertPosition = vert;
+            horPosition = hor;
+            cubePosition = cube;
+        }
+
+        public string Value
+        {
+            get => _value;
             set
             {
-                _name = value;
-                OnPropertyChanged("Name");
+                _value = value;
+                OnPropertyChanged("Value");
             }
         }
         public int Id

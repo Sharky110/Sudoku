@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Windows.Controls;
-using System.Windows.Media;
 using SudokuEngine;
 using System.Windows.Input;
 
@@ -16,12 +14,12 @@ namespace Game.ViewModels
     {
         private Sudoku _sudoku;
 
-        private ObservableCollection<CustomButton> _buttons;
+        private ObservableCollection<Cell> _cells;
 
-        public ObservableCollection<CustomButton> Buttons
+        public ObservableCollection<Cell> Cells
         {
-            get => _buttons;
-            set => SetProperty(ref _buttons, value);
+            get => _cells;
+            set => SetProperty(ref _cells, value);
         }
 
         #region Commands
@@ -37,12 +35,12 @@ namespace Game.ViewModels
 
             var dict = _sudoku.Initialize(29);
 
-            
 
-           Buttons = new ObservableCollection<CustomButton>(
-               dict.Select(s => new CustomButton()
+
+            Cells = new ObservableCollection<Cell>(
+               dict.Select(s => new Cell()
                {
-                   Name = $" {s.Value} ",
+                   Value = $" {s.Value} ",
                    Id = s.Key,
                    IsEnabled = string.IsNullOrWhiteSpace(s.Value),
                    Color = string.IsNullOrWhiteSpace(s.Value) ? "White" : "LightGray",
@@ -52,25 +50,25 @@ namespace Game.ViewModels
 
         public void ButtonClick(object sender)
         {
-            var customButton = ((sender as Button)?.DataContext as CustomButton);
+            var customButton = ((sender as Button)?.DataContext as Cell);
 
-            if (!Buttons[customButton.Id].IsEnabled)
+            if (!Cells[customButton.Id].IsEnabled)
                 return;
 
             SetDefaultColor();
 
-            var num = string.IsNullOrWhiteSpace(customButton.Name) ? "0" : customButton.Name;
+            var num = string.IsNullOrWhiteSpace(customButton.Value) ? "0" : customButton.Value;
 
             var ff = Convert.ToInt32(num);
 
-            customButton.Name = num == "9" ? "1" : $"{ ff += 1}";
+            customButton.Value = num == "9" ? "1" : $"{ ff += 1}";
             customButton.Color = "LightGreen";
 
-            _sudoku.SetValueToCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Name)));
+            _sudoku.SetValueToCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Value)));
 
-            var dd = _sudoku.CheckCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Name)));
+            var dd = _sudoku.CheckCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Value)));
 
-            foreach (var button in Buttons)
+            foreach (var button in Cells)
             {
                 if (dd.Contains(button.Id))
                     button.Color = "Red";
@@ -79,10 +77,10 @@ namespace Game.ViewModels
 
         public void SetDefaultColor()
         {
-            foreach (var button in Buttons)
+            foreach (var button in Cells)
             {
                 button.Color = button.IsEnabled ? "White" : "LightGray";
-                if (button.Color == "White" && !string.IsNullOrWhiteSpace(button.Name))
+                if (button.Color == "White" && !string.IsNullOrWhiteSpace(button.Value))
                     button.Color = "LightGreen";
             }
         }
