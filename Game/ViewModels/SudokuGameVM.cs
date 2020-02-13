@@ -1,4 +1,5 @@
 ﻿using Game.Models;
+using Game.Commands;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,7 +26,7 @@ namespace Game.ViewModels
 
         #region Commands
 
-        public ICommand ButtonCommand { get; }
+        
         public ICommand SaveFileCommand { get; }
 
         #endregion
@@ -36,41 +37,44 @@ namespace Game.ViewModels
 
             var dict = _sudoku.Initialize(29);
 
+            
 
-
-            Buttons = new ObservableCollection<CustomButton>(
+           Buttons = new ObservableCollection<CustomButton>(
                dict.Select(s => new CustomButton()
                {
                    Name = $" {s.Value} ",
-                   Id = $"{s.Key}",
-                   IsEnabled = string.IsNullOrWhiteSpace(s.Value) ,
-                    Color = string.IsNullOrWhiteSpace(s.Value) ? "White" : "LightGray"
-               }));
+                   Id = s.Key,
+                   IsEnabled = string.IsNullOrWhiteSpace(s.Value),
+                   Color = string.IsNullOrWhiteSpace(s.Value) ? "White" : "LightGray",
+                   ButtonCommand = new RelayCommand(ButtonClick)
+        }));
         }
 
-        public void BtnClick(Button btn)
+        public void ButtonClick(object sender)
         {
-            var buttonId = (btn.DataContext as CustomButton).Id;
+            var customButton = ((sender as Button)?.DataContext as CustomButton);
 
-            if (!Buttons[Convert.ToInt32(buttonId)].IsEnabled)
+            if (!Buttons[customButton.Id].IsEnabled)
                 return;
 
             SetDefaultColor();
 
-            var num = string.IsNullOrWhiteSpace((string)btn.Content) ? "0" : (string)btn.Content;
+            var num = string.IsNullOrWhiteSpace(customButton.Name) ? "0" : customButton.Name;
 
             var ff = Convert.ToInt32(num);
 
-            btn.Content = num == "9" ? "1" : $"{ ff += 1}";
+            customButton.Name = num == "9" ? "1" : $"{ ff += 1}";
+            customButton.Color = "LightGreen";
 
-            var dd = _sudoku.CheckCell(new KeyValuePair<int, int>(Convert.ToInt32((btn.DataContext as CustomButton).Id), Convert.ToInt32(btn.Content)));
+            _sudoku.SetValueToCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Name)));
+
+            var dd = _sudoku.CheckCell(new KeyValuePair<int, int>(customButton.Id, Convert.ToInt32(customButton.Name)));
 
             foreach (var button in Buttons)
             {
-                if (dd.Contains(Convert.ToInt32(button.Id)))
+                if (dd.Contains(button.Id))
                     button.Color = "Red";
             }
-
         }
 
         public void SetDefaultColor()
@@ -78,6 +82,8 @@ namespace Game.ViewModels
             foreach (var button in Buttons)
             {
                 button.Color = button.IsEnabled ? "White" : "LightGray";
+                if (button.Color == "White" && !string.IsNullOrWhiteSpace(button.Name))
+                    button.Color = "LightGreen";
             }
         }
     }

@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
+using System.Windows.Input;
 
 namespace Game.Models
 {
     public class CustomButton : INotifyPropertyChanged
     {
         private string _name;
-        private string _id;
+        private int _id;
         private bool _isEnabled;
         private string _color;
 
@@ -22,7 +20,7 @@ namespace Game.Models
                 OnPropertyChanged("Name");
             }
         }
-        public string Id
+        public int Id
         {
             get => _id;
             set
@@ -56,5 +54,7 @@ namespace Game.Models
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
+
+        public ICommand ButtonCommand { get; set; }
     }
 }

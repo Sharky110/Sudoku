@@ -30,5 +30,10 @@ namespace SudokuEngine
         {
             return _field.CheckCell(cell.Key, cell.Value);
         }
+
+        public void SetValueToCell(KeyValuePair<int, int> cell)
+        {
+            _field.SetValueToCell(cell.Key, cell.Value);
+        }
     }
 }

@@ -56,6 +56,11 @@ namespace SudokuEngine
             return ff;
         }
 
+        public void SetValueToCell(int id, int value)
+        {
+            _cells[id].value = value;
+        }
+
         private List<Cell> GenerateField()
         {
             var list = new List<Cell>(FIELD_SIZE);
