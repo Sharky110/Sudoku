@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Game.Commands;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Game.Models
 {
@@ -27,19 +27,6 @@ namespace Game.Models
             }
         }
 
-        public void GenerateSudoku(int threads)
-        {
-            var tasks = new Task<Cell[]>[threads];
-
-            for (int i = 0; i < threads; i++)
-                tasks[i] = Task.Run(GenerateNums);
-
-            while (!tasks.Any(x => x.IsCompleted))
-                Thread.Sleep(1);
-
-            _cells = tasks.FirstOrDefault().Result;
-        }
-
         public Dictionary<int, string> ToDictionary()
         {
             return _cells.ToDictionary(k => k.Id, v => v.Value);
@@ -57,12 +44,56 @@ namespace Game.Models
             return ff;
         }
 
-        public Dictionary<int, string> Initialize(int difficult)
+        public Cell[] Initialize(int difficult)
         {
-            GenerateSudoku(2);
+            GenerateNums();
             RemoveNums(difficult);
 
-            return _field.ToDictionary();
+            foreach (var cell in _cells)
+            {
+                cell.IsEnabled = string.IsNullOrWhiteSpace(cell.Value);
+                cell.Color = string.IsNullOrWhiteSpace(cell.Value) ? Brushes.White : Brushes.LightGray;
+                cell.ButtonCommand = new RelayCommand(ButtonClick);
+            }
+
+            return _cells;
+        }
+
+        public void ButtonClick(object sender)
+        {
+            var customButton = ((sender as Button)?.DataContext as Cell);
+
+            if (!_cells[customButton.Id].IsEnabled)
+                return;
+
+            SetDefaultColor();
+
+            var num = string.IsNullOrWhiteSpace(customButton.Value) ? "0" : customButton.Value;
+
+            var ff = Convert.ToInt32(num);
+
+            customButton.Value = num == "9" ? "1" : $"{ ff += 1}";
+            customButton.Color = Brushes.LightGreen;
+
+            SetValueToCell(customButton.Id, customButton.Value);
+
+            var dd = CheckCell(customButton.Id, customButton.Value);
+
+            foreach (var button in _cells)
+            {
+                if (dd.Contains(button.Id) && button.Id != customButton.Id)
+                    button.Color = button.IsEnabled ? Brushes.LightYellow : Brushes.Yellow;
+            }
+        }
+
+        public void SetDefaultColor()
+        {
+            foreach (var button in _cells)
+            {
+                button.Color = button.IsEnabled ? Brushes.White : Brushes.LightGray;
+                if (button.Color == Brushes.White && !string.IsNullOrWhiteSpace(button.Value))
+                    button.Color = Brushes.LightGreen;
+            }
         }
 
         public void SetValueToCell(int id, string value)
@@ -81,24 +112,24 @@ namespace Game.Models
             return list;
         }
 
-        private Cell[] GenerateNums()
+        private void GenerateNums()
         {
-            var SudokuField = GenerateField();
+            _cells = GenerateField();
 
             var random = new Random();
             var counter = 0;
 
-            for (int i = 0; i < SudokuField.Length; i++)
+            for (int i = 0; i < _cells.Length; i++)
             {
                 var randVal = (random.Next(100) % 9 + 1).ToString();
 
-                if (!SudokuField.Any(x =>
-                 (x.horPosition == SudokuField[i].horPosition && x.Value == randVal) ||
-                 (x.vertPosition == SudokuField[i].vertPosition && x.Value == randVal) ||
-                 (x.cubePosition == SudokuField[i].cubePosition && x.Value == randVal)))
+                if (!_cells.Any(x =>
+                 (x.horPosition == _cells[i].horPosition && x.Value == randVal) ||
+                 (x.vertPosition == _cells[i].vertPosition && x.Value == randVal) ||
+                 (x.cubePosition == _cells[i].cubePosition && x.Value == randVal)))
                 {
                     counter = 0;
-                    SudokuField[i].Value = randVal;
+                    _cells[i].Value = randVal;
                 }
                 else
                 {
@@ -108,12 +139,10 @@ namespace Game.Models
                 if (counter > 90)
                 {
                     i = -1;
-                    foreach (var t in SudokuField)
+                    foreach (var t in _cells)
                         t.Value = 0.ToString();
                 }
             }
-
-            return SudokuField;
         }
 
         private string ToStging(int num)

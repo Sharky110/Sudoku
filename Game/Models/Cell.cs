@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Game.Models
 {
@@ -9,7 +10,7 @@ namespace Game.Models
         private string _value;
         private int _id;
         private bool _isEnabled;
-        private string _color;
+        private SolidColorBrush _color;
 
         public int vertPosition;
         public int horPosition;
@@ -50,7 +51,7 @@ namespace Game.Models
                 OnPropertyChanged("IsEnabled");
             }
         }
-        public string Color
+        public SolidColorBrush Color
         {
             get => _color;
             set
