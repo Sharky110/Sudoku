@@ -24,6 +24,7 @@ namespace Game.Models
             cubePosition = cube;
         }
 
+        #region Properties
         public string Value
         {
             get => _value;
@@ -60,6 +61,8 @@ namespace Game.Models
                 OnPropertyChanged("Color");
             }
         }
+        #endregion
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

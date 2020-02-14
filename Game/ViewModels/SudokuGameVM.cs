@@ -16,10 +16,7 @@ namespace Game.ViewModels
         public SudokuGameVM()
         {
             var gameField = new GameField();
-
-            var dict = gameField.Initialize(29);
-
-            Cells = new ObservableCollection<Cell>(dict);
+            Cells = new ObservableCollection<Cell>(gameField.Init(30));
         }
     }
 }

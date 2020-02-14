@@ -44,7 +44,7 @@ namespace Game.Models
             return ff;
         }
 
-        public Cell[] Initialize(int difficult)
+        public Cell[] Init(int difficult)
         {
             GenerateNums();
             RemoveNums(difficult);
@@ -55,7 +55,6 @@ namespace Game.Models
                 cell.Color = string.IsNullOrWhiteSpace(cell.Value) ? Brushes.White : Brushes.LightGray;
                 cell.ButtonCommand = new RelayCommand(ButtonClick);
             }
-
             return _cells;
         }
 
