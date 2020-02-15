@@ -1,23 +1,37 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace Game.Models
 {
-    public class CustomButton : INotifyPropertyChanged
+    public class Cell : INotifyPropertyChanged
     {
-        private string _name;
+        private string _value;
         private int _id;
         private bool _isEnabled;
-        private string _color;
+        private SolidColorBrush _color;
 
-        public string Name
+        public int vertPosition;
+        public int horPosition;
+        public int cubePosition;
+
+        public Cell(int id, int hor, int vert, int cube)
         {
-            get => _name;
+            Id = id;
+            vertPosition = vert;
+            horPosition = hor;
+            cubePosition = cube;
+        }
+
+        #region Properties
+        public string Value
+        {
+            get => _value;
             set
             {
-                _name = value;
-                OnPropertyChanged("Name");
+                _value = value;
+                OnPropertyChanged("Value");
             }
         }
         public int Id
@@ -38,7 +52,7 @@ namespace Game.Models
                 OnPropertyChanged("IsEnabled");
             }
         }
-        public string Color
+        public SolidColorBrush Color
         {
             get => _color;
             set
@@ -47,6 +61,8 @@ namespace Game.Models
                 OnPropertyChanged("Color");
             }
         }
+        #endregion
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
