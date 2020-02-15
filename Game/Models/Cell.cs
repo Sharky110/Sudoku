@@ -11,6 +11,7 @@ namespace Game.Models
         private int _id;
         private bool _isEnabled;
         private SolidColorBrush _color;
+        private bool _isButtonPushed = false;
 
         public int vertPosition;
         public int horPosition;
@@ -61,6 +62,15 @@ namespace Game.Models
                 OnPropertyChanged("Color");
             }
         }
+        public bool IsButtonPushed
+        {
+            get => _isButtonPushed;
+            set
+            {
+                _isButtonPushed = value;
+                OnPropertyChanged("IsButtonPushed");
+            }
+        }
         #endregion
 
 
@@ -72,5 +82,6 @@ namespace Game.Models
         }
 
         public ICommand ButtonCommand { get; set; }
+        public ICommand button2Command { get; set; }
     }
 }

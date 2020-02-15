@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace Game.Models
@@ -54,24 +53,20 @@ namespace Game.Models
                 cell.IsEnabled = string.IsNullOrWhiteSpace(cell.Value);
                 cell.Color = string.IsNullOrWhiteSpace(cell.Value) ? Brushes.White : Brushes.LightGray;
                 cell.ButtonCommand = new RelayCommand(ButtonClick);
+                cell.button2Command = new RelayCommand(button2click);
             }
             return _cells;
         }
 
-        public void ButtonClick(object sender)
+        private void button2click(object obj)
         {
-            var customButton = ((sender as Button)?.DataContext as Cell);
+            var val = Convert.ToInt32(obj);
 
-            if (!_cells[customButton.Id].IsEnabled)
-                return;
+            var customButton = _cells[cid];
 
             SetDefaultColor();
 
-            var num = string.IsNullOrWhiteSpace(customButton.Value) ? "0" : customButton.Value;
-
-            var ff = Convert.ToInt32(num);
-
-            customButton.Value = num == "9" ? "1" : $"{ ff += 1}";
+            customButton.Value = val.ToString();
             customButton.Color = Brushes.LightGreen;
 
             SetValueToCell(customButton.Id, customButton.Value);
@@ -83,6 +78,25 @@ namespace Game.Models
                 if (dd.Contains(button.Id) && button.Id != customButton.Id)
                     button.Color = button.IsEnabled ? Brushes.LightYellow : Brushes.Yellow;
             }
+            customButton.IsButtonPushed = false;
+        }
+
+        public static int cid;
+
+        public void ButtonClick(object id)
+        {
+            
+            var cellId = Convert.ToInt32(id);
+            var customButton = _cells[cellId];
+
+            if (!_cells[customButton.Id].IsEnabled)
+                return;
+
+            cid = cellId;
+            CloseAllPopups();
+            customButton.IsButtonPushed = true;
+
+            
         }
 
         public void SetDefaultColor()
@@ -147,6 +161,14 @@ namespace Game.Models
         private string ToStging(int num)
         {
             return num == 0 ? " " : num.ToString();
+        }
+
+        private void CloseAllPopups()
+        {
+            foreach (var cell in _cells)
+            {
+                cell.IsButtonPushed = false;
+            }
         }
     }
 }

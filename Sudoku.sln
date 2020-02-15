@@ -5,9 +5,7 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SudokuGenerator", "SudokuGenerator\SudokuGenerator.csproj", "{51EA2F40-30BE-4179-881E-93C1A0F6F6AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuEngine", "Sudoku\SudokuEngine.csproj", "{9E14D391-70E6-4F1F-820C-A717EBAB3215}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Game", "Game\Game.csproj", "{ED864457-7270-482D-A50B-44C2D19EDC97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Game", "Game\Game.csproj", "{ED864457-7270-482D-A50B-44C2D19EDC97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		{51EA2F40-30BE-4179-881E-93C1A0F6F6AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51EA2F40-30BE-4179-881E-93C1A0F6F6AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51EA2F40-30BE-4179-881E-93C1A0F6F6AD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9E14D391-70E6-4F1F-820C-A717EBAB3215}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9E14D391-70E6-4F1F-820C-A717EBAB3215}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9E14D391-70E6-4F1F-820C-A717EBAB3215}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9E14D391-70E6-4F1F-820C-A717EBAB3215}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ED864457-7270-482D-A50B-44C2D19EDC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ED864457-7270-482D-A50B-44C2D19EDC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED864457-7270-482D-A50B-44C2D19EDC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
