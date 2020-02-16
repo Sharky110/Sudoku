@@ -1,17 +1,51 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using System.Windows.Media;
 
 namespace Game.Models
 {
-    public class Cell : INotifyPropertyChanged
+    public class Cell : Notificator
     {
+        #region Private Variables
         private string _value;
         private int _id;
         private bool _isEnabled;
         private SolidColorBrush _color;
+
         private bool _isButtonPushed = false;
+        #endregion
+
+        #region Properties
+        public string Value
+        {
+            get => _value;
+            set => SetProperty(ref _value, value, "Value");
+        }
+        public int Id
+        {
+            get => _id;
+            set => SetProperty(ref _id, value, "Id");
+        }
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set => SetProperty(ref _isEnabled, value, "IsEnabled");
+        }
+        public SolidColorBrush Color
+        {
+            get => _color;
+            set => SetProperty(ref _color, value, "Color");
+        }
+        public bool IsButtonPushed
+        {
+            get => _isButtonPushed;
+            set => SetProperty(ref _isButtonPushed, value, "IsButtonPushed");
+        }
+        #endregion
+
+        #region Commands
+        public ICommand ButtonCommand { get; set; }
+        public ICommand button2Command { get; set; }
+        #endregion
 
         public int vertPosition;
         public int horPosition;
@@ -24,64 +58,5 @@ namespace Game.Models
             horPosition = hor;
             cubePosition = cube;
         }
-
-        #region Properties
-        public string Value
-        {
-            get => _value;
-            set
-            {
-                _value = value;
-                OnPropertyChanged("Value");
-            }
-        }
-        public int Id
-        {
-            get => _id;
-            set
-            {
-                _id = value;
-                OnPropertyChanged("Id");
-            }
-        }
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                _isEnabled = value;
-                OnPropertyChanged("IsEnabled");
-            }
-        }
-        public SolidColorBrush Color
-        {
-            get => _color;
-            set
-            {
-                _color = value;
-                OnPropertyChanged("Color");
-            }
-        }
-        public bool IsButtonPushed
-        {
-            get => _isButtonPushed;
-            set
-            {
-                _isButtonPushed = value;
-                OnPropertyChanged("IsButtonPushed");
-            }
-        }
-        #endregion
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
-
-        public ICommand ButtonCommand { get; set; }
-        public ICommand button2Command { get; set; }
     }
 }

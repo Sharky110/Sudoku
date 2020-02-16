@@ -3,10 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Models="clr-namespace:Game.Models"
 
-        Title="Sudoku" Height="600" Width="685" ResizeMode="NoResize">
+        Title="Sudoku" Height="600" Width="700" ResizeMode="NoResize">
     <Grid>
-        <Label x:Name="label" Content="{Binding Path=CurrentDifficult}" HorizontalAlignment="Left" Margin="479,65,0,0" VerticalAlignment="Top" Width="123"/>
-        
+        <Label x:Name="label" Content="Текущая сложность:" 
+               HorizontalAlignment="Left" Margin="479,65,0,0" VerticalAlignment="Top" 
+               Width="150" FontSize="14"/>
+        <Label Content="{Binding Path=Difficult}" 
+               HorizontalAlignment="Left" Margin="619,64,0,0" VerticalAlignment="Top" 
+               Width="61" FontSize="14" Height="30"/>
+        <Label x:Name="label1" Content="Выберите сложность:" HorizontalAlignment="Left" 
+               Margin="479,102,0,0" VerticalAlignment="Top" Width="150" FontSize="14"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Margin="629,106,0,0" Text="{Binding Path=Difficult}"
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="30" FontSize="14"/>
+        <Button x:Name="button" Content="Начать новую игру" HorizontalAlignment="Left" Command="{Binding Path=NewGameCommand}"
+                Margin="486,147,0,0" VerticalAlignment="Top" FontSize="14"/>
         <Grid Height="450" Width="450" Margin="24" HorizontalAlignment="Left">
 
             <ItemsControl ItemsSource="{Binding Path=Cells}" >
@@ -65,4 +75,8 @@
 
         </Grid>
     </Grid>
+
+    <Window.InputBindings>
+        <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClosePopupsCommand}"/>
+    </Window.InputBindings>
 </Window>

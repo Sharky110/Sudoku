@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text;
 
-namespace Game.ViewModels
+namespace Game.Models
 {
-    public class SudokuGameVMBase
+    public abstract class Notificator : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
