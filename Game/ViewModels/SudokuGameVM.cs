@@ -1,5 +1,6 @@
 ﻿using Game.Commands;
 using Game.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -16,8 +17,12 @@ namespace Game.ViewModels
         public int Difficult
         {
             get => _difficult;
-            set => SetProperty(ref _difficult, value);
-        }
+            set
+            {
+                var val = Math.Min(Math.Max(value, 1), 80);
+                SetProperty(ref _difficult, val);
+            }
+        } 
 
         public ObservableCollection<Cell> Cells
         {

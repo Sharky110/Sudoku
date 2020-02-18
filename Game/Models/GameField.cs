@@ -10,8 +10,6 @@ namespace Game.Models
     {
         private Cell[] _cells = new Cell[FIELD_SIZE];
 
-        private Cell[,] _testcells = new Cell[9,9];
-
         private const int FIELD_SIZE = 81;
 
         public void RemoveNums(int numsToRemove)
@@ -33,16 +31,9 @@ namespace Game.Models
             return _cells.ToDictionary(k => k.Id, v => v.Value);
         }
 
-        public IEnumerable<int> CheckCell(int id, string value)
+        public IEnumerable<int> GetDuplicateIdCells(int id, string value)
         {
-            var cell = _cells.Where(x => x.Id == id).FirstOrDefault();
-
-            var ff = _cells.Where(x =>
-                 (x.horPosition == cell.horPosition && x.Value == value) ||
-                 (x.vertPosition == cell.vertPosition && x.Value == value) ||
-                 (x.cubePosition == cell.cubePosition && x.Value == value)).Select(x => x.Id);
-
-            return ff;
+            return _cells.Where(cell => IsCellValueExist(cell, _cells[id], value)).Select(x => x.Id);
         }
 
         public Cell[] Init(int difficult)
@@ -62,23 +53,21 @@ namespace Game.Models
 
         private void button2click(object obj)
         {
-            var val = Convert.ToInt32(obj);
-
             var customButton = _cells[cid];
 
             SetDefaultColor();
 
-            customButton.Value = val.ToString();
+            customButton.Value = obj.ToString();
             customButton.Color = Brushes.LightGreen;
 
             SetValueToCell(customButton.Id, customButton.Value);
 
-            var dd = CheckCell(customButton.Id, customButton.Value);
+            var idCells = GetDuplicateIdCells(customButton.Id, customButton.Value);
 
-            foreach (var button in _cells)
+            foreach (var cell in _cells)
             {
-                if (dd.Contains(button.Id) && button.Id != customButton.Id)
-                    button.Color = button.IsEnabled ? Brushes.LightYellow : Brushes.Yellow;
+                if (idCells.Contains(cell.Id) && cell.Id != customButton.Id)
+                    cell.Color = cell.IsEnabled ? Brushes.Yellow : Brushes.Orange;
             }
             customButton.IsButtonPushed = false;
         }
@@ -134,10 +123,7 @@ namespace Game.Models
             {
                 var randVal = (random.Next(100) % 9 + 1).ToString();
 
-                if (!_cells.Any(x =>
-                 (x.horPosition == _cells[i].horPosition && x.Value == randVal) ||
-                 (x.vertPosition == _cells[i].vertPosition && x.Value == randVal) ||
-                 (x.cubePosition == _cells[i].cubePosition && x.Value == randVal)))
+                if (!_cells.Any(cell => IsCellValueExist(cell, _cells[i], randVal)))
                 {
                     counter = 0;
                     _cells[i].Value = randVal;
@@ -150,8 +136,7 @@ namespace Game.Models
                 if (counter > 40)
                 {
                     i = -1;
-                    foreach (var t in _cells)
-                        t.Value = 0.ToString();
+                    _cells = GenerateField();
                 }
             }
         }
@@ -164,69 +149,16 @@ namespace Game.Models
             }
         }
 
-         bool IsInRow(int x, string value)
+        bool IsCellValueExist(Cell cell, Cell newCell, string newValue)
         {
-
-            for (int y = 0; y < 9; y++)
-                if (_testcells[x, y].Value == value)
+            if (cell.Value == newValue)
+                if (cell.horPosition == newCell.horPosition)
+                    return true;
+                else if (cell.vertPosition == newCell.vertPosition)
+                    return true;
+                else if (cell.cubePosition == newCell.cubePosition)
                     return true;
             return false;
-        }
-
-         bool IsInCol(int y, string value)
-        {
-            for (int x = 0; x < 9; x++)
-                if (_testcells[x, y].Value == value)
-                    return true;
-            return false;
-        }
-
-         bool IsInCube(int x, int y, string value)
-        {
-            var startX = x / 3 * 3;
-            var startY = y / 3 * 3;
-            var endX = startX + 3;
-            var endY = startY + 3;
-
-            for (int a = startX; a < endX; a++)
-                for (int b = startY; b < endY; b++)
-                    if (_testcells[a, b].Value == value)
-                        return true;
-
-            return false;
-        }
-
-        public void experimentalGeneration()
-        {
-            byte counter = 0;
-            string random;
-            var rand = new Random();
-            for (int x = 0; x < 9; x++)
-            {
-                for (int y = 0; y < 9; y++)
-                {
-                    random = rand.Next(1, 10).ToString();
-
-                    if (IsInRow(x, random) || IsInCol(y, random) || IsInCube(x, y, random))
-                    {
-                        counter += 1;
-                        y -= 1;
-                        if (counter > 40)
-                        {
-                            x = -1;
-                            counter = 0;
-                            _testcells = new Cell[9, 9];
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        _testcells[x, y].Value = random;
-                        counter = 0;
-                    }
-
-                }
-            }
         }
     }
 }
