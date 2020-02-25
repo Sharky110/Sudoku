@@ -8,9 +8,14 @@ namespace Game.Models
 {
     class GameField
     {
+        private const int FIELD_SIZE = 81;
+
         private Cell[] _cells = new Cell[FIELD_SIZE];
 
-        private const int FIELD_SIZE = 81;
+        public GameField()
+        {
+            _cells = GenerateField();
+        }
 
         public void RemoveNums(int numsToRemove)
         {
@@ -45,7 +50,7 @@ namespace Game.Models
             {
                 cell.IsEnabled = string.IsNullOrWhiteSpace(cell.Value);
                 cell.Color = string.IsNullOrWhiteSpace(cell.Value) ? Brushes.White : Brushes.LightGray;
-                cell.ButtonCommand = new RelayCommand(ButtonClick);
+                cell.LeftClickCommand = new RelayCommand(ButtonClick);
                 cell.button2Command = new RelayCommand(button2click);
             }
             return _cells;
@@ -70,6 +75,15 @@ namespace Game.Models
                     cell.Color = cell.IsEnabled ? Brushes.Yellow : Brushes.Orange;
             }
             customButton.IsButtonPushed = false;
+
+            if(IsGameEnded())
+            {
+                foreach (var cell in _cells)
+                {
+                    cell.IsEnabled = false;
+                }
+                System.Windows.MessageBox.Show("You win!!! Congratulations!!!");
+            }
         }
 
         public static int cid;
@@ -114,29 +128,19 @@ namespace Game.Models
 
         private void GenerateNums()
         {
-            _cells = GenerateField();
+            var sudoku = SudokuGenerator.Generate();
 
-            var random = new Random();
-            var counter = 0;
+            int x = 0;
+            int y = 0;
 
-            for (int i = 0; i < _cells.Length; i++)
+            foreach (var cell in _cells)
             {
-                var randVal = (random.Next(100) % 9 + 1).ToString();
-
-                if (!_cells.Any(cell => IsCellValueExist(cell, _cells[i], randVal)))
+                cell.Value = sudoku[x, y].ToString();
+                x += 1;
+                if(x==9)
                 {
-                    counter = 0;
-                    _cells[i].Value = randVal;
-                }
-                else
-                {
-                    i -= 1;
-                    counter += 1;
-                }
-                if (counter > 40)
-                {
-                    i = -1;
-                    _cells = GenerateField();
+                    x = 0;
+                    y += 1;
                 }
             }
         }
@@ -149,7 +153,7 @@ namespace Game.Models
             }
         }
 
-        bool IsCellValueExist(Cell cell, Cell newCell, string newValue)
+        private bool IsCellValueExist(Cell cell, Cell newCell, string newValue)
         {
             if (cell.Value == newValue)
                 if (cell.horPosition == newCell.horPosition)
@@ -159,6 +163,23 @@ namespace Game.Models
                 else if (cell.cubePosition == newCell.cubePosition)
                     return true;
             return false;
+        }
+
+        private bool IsGameEnded()
+        {
+            foreach (var cell in _cells)
+            {
+                if (!cell.IsEnabled)
+                    continue;
+
+                if (string.IsNullOrEmpty(cell.Value))
+                    return false;
+
+                var idCells = GetDuplicateIdCells(cell.Id, cell.Value);
+                if (idCells.Count() != 1 || idCells.First() != cell.Id)
+                    return false;
+            }
+            return true;
         }
     }
 }

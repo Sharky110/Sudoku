@@ -11,6 +11,7 @@ namespace Game.ViewModels
         #region private variables
         private ObservableCollection<Cell> _cells;
         private int _difficult = 10;
+        private GameField gameField;
         #endregion
 
         #region Properties
@@ -38,14 +39,16 @@ namespace Game.ViewModels
 
         public SudokuGameVM()
         {
+            gameField = new GameField();
+
             NewGame();
+
             NewGameCommand = new RelayCommand(c => NewGame());
             ClosePopupsCommand = new RelayCommand(c => ClosePopups());
         }
 
         private void NewGame()
         {
-            var gameField = new GameField();
             Cells = new ObservableCollection<Cell>(gameField.Init(Difficult));
         }
 

@@ -43,13 +43,13 @@ namespace Game.Models
         #endregion
 
         #region Commands
-        public ICommand ButtonCommand { get; set; }
+        public ICommand LeftClickCommand { get; set; }
         public ICommand button2Command { get; set; }
         #endregion
 
-        public int vertPosition;
-        public int horPosition;
-        public int cubePosition;
+        public int vertPosition { get; }
+        public int horPosition { get; }
+        public int cubePosition { get; }
 
         public Cell(int id, int hor, int vert, int cube)
         {

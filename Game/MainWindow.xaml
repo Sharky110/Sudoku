@@ -27,7 +27,7 @@
                             Content="{Binding Path=Value}" 
                             Background="{Binding Path=Color}">
                                 <Button.InputBindings>
-                                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ButtonCommand}"  CommandParameter="{Binding Path=Id}"/>
+                                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=LeftClickCommand}"  CommandParameter="{Binding Path=Id}"/>
                                 </Button.InputBindings>
                             </Button>
                             <Popup IsOpen="{Binding Path=IsButtonPushed}" Placement="Mouse">
