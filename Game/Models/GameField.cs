@@ -31,11 +31,6 @@ namespace Game.Models
             }
         }
 
-        public Dictionary<int, string> ToDictionary()
-        {
-            return _cells.ToDictionary(k => k.Id, v => v.Value);
-        }
-
         public IEnumerable<int> GetDuplicateIdCells(int id, string value)
         {
             return _cells.Where(cell => IsCellValueExist(cell, _cells[id], value)).Select(x => x.Id);
@@ -50,7 +45,7 @@ namespace Game.Models
             {
                 cell.IsEnabled = string.IsNullOrWhiteSpace(cell.Value);
                 cell.Color = string.IsNullOrWhiteSpace(cell.Value) ? Brushes.White : Brushes.LightGray;
-                cell.LeftClickCommand = new RelayCommand(ButtonClick);
+                cell.LeftClickCommand = new RelayCommand(LeftClick);
                 cell.button2Command = new RelayCommand(button2click);
             }
             return _cells;
@@ -88,7 +83,7 @@ namespace Game.Models
 
         public static int cid;
 
-        public void ButtonClick(object id)
+        public void LeftClick(object id)
         {
             cid = Convert.ToInt32(id);
             var customButton = _cells[cid];

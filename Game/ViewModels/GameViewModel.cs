@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace Game.ViewModels
 {
-    public class SudokuGameVM : Notificator
+    public class GameViewModel : Notificator
     {
         #region private variables
         private ObservableCollection<Cell> _cells;
@@ -37,7 +37,7 @@ namespace Game.ViewModels
         public ICommand ClosePopupsCommand { get; set; }
         #endregion
 
-        public SudokuGameVM()
+        public GameViewModel()
         {
             gameField = new GameField();
 

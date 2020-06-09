@@ -1,8 +1,10 @@
-﻿<Window x:Class="Game.MainWindow"
+﻿<Window x:Class="Game.GameView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Models="clr-namespace:Game.Models"
-
+        mc:Ignorable="d"
         Title="Sudoku" Height="600" Width="700" ResizeMode="NoResize">
     <Grid>
         <Label x:Name="label" Content="Текущая сложность:" 
@@ -30,7 +32,7 @@
                                     <MouseBinding MouseAction="LeftClick" Command="{Binding Path=LeftClickCommand}"  CommandParameter="{Binding Path=Id}"/>
                                 </Button.InputBindings>
                             </Button>
-                            <Popup IsOpen="{Binding Path=IsButtonPushed}" Placement="Mouse">
+                            <Popup IsOpen="{Binding Path=IsButtonPushed}" Placement="MousePoint" StaysOpen="False" >
                                 <Grid Height="150" Width="150">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -75,7 +77,6 @@
 
         </Grid>
     </Grid>
-
     <Window.InputBindings>
         <MouseBinding MouseAction="LeftClick" Command="{Binding Path=ClosePopupsCommand}"/>
     </Window.InputBindings>
