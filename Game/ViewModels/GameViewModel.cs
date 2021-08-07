@@ -35,6 +35,7 @@ namespace Game.ViewModels
         #region Commands
         public ICommand NewGameCommand { get; set; }
         public ICommand ClosePopupsCommand { get; set; }
+        public ICommand BackToMainMenuCommand { get; set; }
         #endregion
 
         public GameViewModel()
@@ -45,6 +46,15 @@ namespace Game.ViewModels
 
             NewGameCommand = new RelayCommand(c => NewGame());
             ClosePopupsCommand = new RelayCommand(c => ClosePopups());
+            BackToMainMenuCommand = new RelayCommand(c => BackToMainMenu());
+        }
+
+        private void BackToMainMenu()
+        {
+            var gameWindow = GameView.GetInstance();
+            var mainMenuWindow = MainMenuView.GetInstance();
+            mainMenuWindow.Show();
+            gameWindow.Hide();
         }
 
         private void NewGame()
@@ -55,9 +65,7 @@ namespace Game.ViewModels
         private void ClosePopups()
         {
             foreach (var cell in Cells)
-            {
                 cell.IsButtonPushed = false;
-            }
         }
     }
 }

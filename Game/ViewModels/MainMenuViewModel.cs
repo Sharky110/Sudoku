@@ -20,7 +20,6 @@ namespace Game.ViewModels
             var gameWindow = GameView.GetInstance();
             var mainMenuWindow = MainMenuView.GetInstance();
             gameWindow.Show();
-        //    gameWindow.Focus();
             mainMenuWindow.Hide();
         }
     }

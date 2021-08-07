@@ -40,16 +40,15 @@ namespace Game.Models
             get => _isButtonPushed;
             set => SetProperty(ref _isButtonPushed, value, "IsButtonPushed");
         }
+        public int vertPosition { get; }
+        public int horPosition { get; }
+        public int cubePosition { get; }
         #endregion
 
         #region Commands
         public ICommand LeftClickCommand { get; set; }
         public ICommand button2Command { get; set; }
         #endregion
-
-        public int vertPosition { get; }
-        public int horPosition { get; }
-        public int cubePosition { get; }
 
         public Cell(int id, int hor, int vert, int cube)
         {

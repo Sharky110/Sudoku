@@ -13,10 +13,12 @@ namespace Game.Models
             byte counter = 0;
             byte random;
             var rand = new Random();
+            var count = 0;
             for (int x = 0; x < 9; x++)
             {
                 for (int y = 0; y < 9; y++)
                 {
+                    count += 1;
                     random = (byte)(rand.Next(1, 10));
 
                     if (IsInRow(x, random) || IsInCol(y, random) || IsInCube(x, y, random))
@@ -41,18 +43,18 @@ namespace Game.Models
             return sudoku;
         }
 
-        static bool IsInRow(int x, int value)
+        static bool IsInRow(int row, int value)
         {
-            for (int y = 0; y < 9; y++)
-                if (sudoku[x, y] == value)
+            for (int col = 0; col < 9; col++)
+                if (sudoku[row, col] == value)
                     return true;
             return false;
         }
 
-        static bool IsInCol(int y, int value)
+        static bool IsInCol(int col, int value)
         {
-            for (int x = 0; x < 9; x++)
-                if (sudoku[x, y] == value)
+            for (int row = 0; row < 9; row++)
+                if (sudoku[row, col] == value)
                     return true;
             return false;
         }

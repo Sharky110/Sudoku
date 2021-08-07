@@ -67,7 +67,9 @@ namespace Game.Models
             foreach (var cell in _cells)
             {
                 if (idCells.Contains(cell.Id) && cell.Id != customButton.Id)
-                    cell.Color = cell.IsEnabled ? Brushes.Yellow : Brushes.Orange;
+                    cell.Color = cell.IsEnabled 
+                        ? Brushes.Yellow 
+                        : Brushes.Orange;
             }
             customButton.IsButtonPushed = false;
 
@@ -143,9 +145,7 @@ namespace Game.Models
         private void CloseAllPopups()
         {
             foreach (var cell in _cells)
-            {
                 cell.IsButtonPushed = false;
-            }
         }
 
         private bool IsCellValueExist(Cell cell, Cell newCell, string newValue)
